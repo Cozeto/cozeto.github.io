@@ -1,25 +1,29 @@
 {
-  "name": "apple-style-personal-blog-&-notes",
+  "name": "cozeto.github.io",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist --repo git@github.com:Cozeto/cozeto.github.io.git"
   },
   "dependencies": {
-    "react-dom": "^19.2.4",
-    "react-router-dom": "^7.13.0",
-    "react": "^19.2.4",
-    "lucide-react": "^0.563.0",
     "fuse.js": "^7.1.0",
-    "marked": "^12.0.0"
+    "lucide-react": "^0.563.0",
+    "marked": "^12.0.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "gh-pages": "^6.3.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
-  }
+  },
+  "homepage": "https://cozeto.github.io/"
 }
