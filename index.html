@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes & Insights | Digital Garden</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #fbfbfd;
+            color: #1d1d1f;
+        }
+        .apple-blur {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+        }
+        .dark .apple-blur {
+            background-color: rgba(29, 29, 31, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+        }
+        .card-shadow {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-shadow:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+        /* Custom Prose Styling for Markdown */
+        .prose {
+            max-width: 100%;
+        }
+        .prose h1, .prose h2, .prose h3 {
+            color: #1d1d1f;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .dark .prose h1, .dark .prose h2, .dark .prose h3 {
+            color: #f5f5f7;
+        }
+        .prose p {
+            line-height: 1.8;
+            color: #424245;
+        }
+        .dark .prose p {
+            color: #a1a1a6;
+        }
+        .prose pre {
+            background-color: #f5f5f7 !important;
+            border-radius: 1rem;
+            border: 1px solid #e5e5e7;
+        }
+        .dark .prose pre {
+            background-color: #000 !important;
+            border-color: #333;
+        }
+        .prose code {
+            color: #0071e3;
+            background: #f0f7ff;
+            padding: 0.2em 0.4em;
+            border-radius: 0.3em;
+            font-weight: 500;
+        }
+        .dark .prose code {
+            color: #2997ff;
+            background: #1d1d1f;
+        }
+        .search-container {
+            transition: all 0.3s ease;
+        }
+        .search-container:focus-within {
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "fuse.js": "https://esm.sh/fuse.js@^7.1.0",
+    "marked": "https://esm.sh/marked@^12.0.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="transition-colors duration-300">
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
