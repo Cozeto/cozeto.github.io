@@ -1,7 +1,7 @@
 
 # 个人博客
 
-本博客系统专为 **GitHub Pages** 设计，采用 **Zero-Config** 自动化部署方案。
+使用Vite构建，通过GitHub Pages部署。
 
 ## 🚀 部署到 GitHub Pages (3 分钟)
 
@@ -27,8 +27,8 @@ git push -u origin main
 
 1. 进入 GitHub 仓库的 **Settings** 选项卡。
 2. 侧边栏点击 **Pages**。
-3. 在 **Build and deployment > Source** 处，选择 **"GitHub Actions"**。
-4. 现在，每次你 `git push` 代码，网站都会自动更新。
+3. 在 **Build and deployment > Source** 处，选择 **"Deploy from a branch"**。
+4. 现在，每次你在 **gh-pages** 分支 `git push` 代码，网站都会自动更新。
 
 ### 4. 关于路径 (重要)
 
@@ -47,7 +47,5 @@ git push -u origin main
 npm install     # 安装依赖
 npm run dev     # 本地预览
 npm run build   # 手动构建
+npm run deploy  # 部署到github仓库
 ```
-
----
-*Powered by React 19 & GitHub Actions.*
