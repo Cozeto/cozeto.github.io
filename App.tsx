@@ -34,14 +34,11 @@ const App: React.FC = () => {
         <footer className="border-t border-gray-100 dark:border-gray-900 py-20 px-8">
           <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="text-sm text-gray-400">
-              <p className="font-bold text-gray-900 dark:text-white mb-2 italic text-lg tracking-tight">Insights<span className="text-blue-500">.</span></p>
+              <p className="font-bold text-gray-900 dark:text-white mb-2 italic text-lg tracking-tight">Cozeto's blog<span className="text-blue-500">.</span></p>
               <p>© 2026 Crafted with precision. Designed for the web.</p>
             </div>
             <nav className="flex gap-10 text-sm font-semibold text-gray-500 dark:text-gray-400">
-              <a href="#" className="hover:text-blue-500 transition-colors">GitHub</a>
-              <a href="#" className="hover:text-blue-500 transition-colors">X / Twitter</a>
-              <a href="#" className="hover:text-blue-500 transition-colors">Digital Archive</a>
-              <a href="#" className="hover:text-blue-500 transition-colors">RSS Feed</a>
+              <a href="https://github.com/Cozeto" className="hover:text-blue-500 transition-colors">GitHub</a>
             </nav>
           </div>
         </footer>
