@@ -8,7 +8,7 @@ const About: React.FC = () => {
       <section className="flex flex-col md:flex-row items-center gap-16 mb-24">
         <div className="w-64 h-64 rounded-[3rem] overflow-hidden card-shadow shrink-0 rotate-3 transition-transform hover:rotate-0 duration-500">
           <img 
-            src="../assets/kozetor.jpg" 
+            src="/images/kozetor.jpg" 
             alt="Profile" 
             className="w-full h-full object-cover"
           />
