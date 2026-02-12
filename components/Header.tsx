@@ -24,12 +24,12 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, onToggleDarkMode }) => {
           Cozeto's Blog
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+        <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 text-m font-medium">
           {navItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex items-center gap-2 transition-colors ${
+              className={`transition-colors py-1 ${
                 location.pathname === item.path 
                   ? 'text-blue-600 dark:text-blue-400' 
                   : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'

@@ -22,7 +22,7 @@ const App: React.FC = () => {
         <Header isDarkMode={isDarkMode} onToggleDarkMode={toggleDarkMode} />
         
         {/* Increased max-width for PC-first wide layout */}
-        <main className="max-w-[1600px] mx-auto px-8 pt-32 pb-32">
+        <main className="max-w-[1800px] mx-auto px-2 pt-20 pb-32">
           <Routes>
             <Route path="/" element={<NoteList notes={mockNotes} />} />
             <Route path="/note/:id" element={<NoteDetail notes={mockNotes} />} />

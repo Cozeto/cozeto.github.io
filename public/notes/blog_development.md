@@ -1,4 +1,8 @@
-# 个人博客
+# 博客网站搭建
+
+<!-- [tag]: Web Application、Vite -->
+
+<!-- [description]: 记录Blog网站搭建所用工具及流程 -->
 
 使用Vite构建，通过GitHub Pages部署。
 
@@ -39,9 +43,6 @@ git push -u origin main
 - **Markdown**: 将 `.md` 文件放入根目录的 `/public/notes/` 文件夹。
 - **PDF**: 将 `.pdf` 文件放入根目录的 `/public/notes/` 文件夹。
 - **元数据**: 使用 `scripts/generate-registry.js` 自动化脚本同步更新 `registry.ts` 中的列表
-  ```bash
-  node .\scripts\generate-registry.js
-  ```
 
 ## 🛠 开发环境
 
