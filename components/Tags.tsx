@@ -26,9 +26,9 @@ const Tags: React.FC<TagsProps> = ({ notes }) => {
           <Link 
             key={tag} 
             to={`/?query=${tag}`}
-            className="group bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 flex-1 min-w-[180px] max-w-[240px]"
+            className="justify-center group bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 flex-1 min-w-[180px] max-w-[240px]"
           >
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex justify-center items-center gap-3 h-full">
               <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
                 <TagIcon size={18} />
               </div>
