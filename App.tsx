@@ -38,7 +38,7 @@ const App: React.FC = () => {
               <p>© 2026 Crafted with precision. Designed for the web.</p>
             </div>
             <nav className="flex gap-10 text-sm font-semibold text-gray-500 dark:text-gray-400">
-              <a href="https://github.com/Cozeto" className="hover:text-blue-500 transition-colors">GitHub</a>
+              <a href="https://github.com/Cozeto/cozeto.github.io" className="hover:text-blue-500 transition-colors">GitHub</a>
             </nav>
           </div>
         </footer>

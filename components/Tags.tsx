@@ -21,28 +21,20 @@ const Tags: React.FC<TagsProps> = ({ notes }) => {
 
   return (
     <div className="max-w-5xl mx-auto py-12 animate-in fade-in slide-in-from-top-4 duration-700">
-      <header className="mb-20 text-center">
-        <h1 className="text-6xl font-extrabold tracking-tight mb-6 italic">Taxonomy<span className="text-blue-500">.</span></h1>
-        <p className="text-xl text-gray-500 dark:text-gray-400">Browse through {tagCloud.length} unique topics and research areas.</p>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex flex-wrap justify-center gap-6 w-full max-w-5xl">
         {tagCloud.map(([tag, count]) => (
           <Link 
             key={tag} 
-            to={`/?query=${tag}`} // Linking to home with a search query or state
-            className="group bg-white dark:bg-gray-900 p-8 rounded-[2rem] card-shadow border border-gray-100 dark:border-gray-800 transition-all hover:scale-[1.02]"
+            to={`/?query=${tag}`}
+            className="group bg-white dark:bg-gray-900 p-5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 flex-1 min-w-[180px] max-w-[240px]"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-blue-600 dark:text-blue-400">
-                <TagIcon size={24} />
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
+                <TagIcon size={18} />
               </div>
-              <span className="text-4xl font-black text-gray-100 dark:text-gray-800 group-hover:text-blue-500/10 transition-colors">
-                {count.toString().padStart(2, '0')}
-              </span>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">{tag}</h3>
+              <span className="ml-auto text-sm font-semibold text-gray-400 dark:text-gray-500">{count}</span>
             </div>
-            <h3 className="text-2xl font-bold group-hover:text-blue-600 transition-colors mb-2">#{tag}</h3>
-            <p className="text-sm text-gray-400 font-medium">Explore entries labeled under this category.</p>
           </Link>
         ))}
       </div>
