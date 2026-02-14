@@ -52,7 +52,8 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
       </section>
 
       {/* Advanced Search Bar */}
-      <section className="sticky top-20 z-40 px-4">
+      {/* <section className="sticky top-20 z-40 px-4"></section> */}
+      <section className="px-4">
         <div className="max-w-3xl mx-auto">
           <div className="search-container relative group">
             <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
