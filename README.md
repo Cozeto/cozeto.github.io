@@ -39,6 +39,7 @@ git push -u origin main
 - **Markdown**: 将 `.md` 文件放入根目录的 `/public/notes/` 文件夹。
 - **PDF**: 将 `.pdf` 文件放入根目录的 `/public/notes/` 文件夹。
 - **元数据**: 使用 `scripts/generate-registry.js` 自动化脚本同步更新 `registry.ts` 中的列表
+
   ```bash
   node .\scripts\generate-registry.js
   ```
