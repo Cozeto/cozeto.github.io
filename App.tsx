@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import NoteList from './components/NoteList';
-import NoteDetail from './components/NoteDetail';
-import Tags from './components/Tags';
-import About from './components/About';
+import Header from './src/components/Header';
+import NoteList from './src/components/NoteList';
+import NoteDetail from './src/components/NoteDetail';
+import Tags from './src/components/Tags';
+import About from './src/components/About';
 import { mockNotes } from './services/contentService';
 
 const App: React.FC = () => {

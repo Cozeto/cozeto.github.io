@@ -1,8 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Share2, Download, Clock } from 'lucide-react';
-import { NoteMetadata } from '../types';
+import { NoteMetadata } from '../../types';
 import { marked } from 'marked';
+import markedKatex from "marked-katex-extension";
+import "katex/dist/katex.min.css";
+import { renderMarkdown } from "../utils/markdown";
+import { generateTOC } from "../utils/markdown";
+
 
 interface NoteDetailProps {
   notes: NoteMetadata[];
@@ -18,6 +23,11 @@ const NoteDetail: React.FC<NoteDetailProps> = ({ notes }) => {
 
   useEffect(() => {
     marked.setOptions({ breaks: true, gfm: true });
+    marked.use(markedKatex());
+    marked.setOptions({
+    breaks: true,
+    gfm: true
+  });
   }, []);
 
   useEffect(() => {
@@ -42,7 +52,15 @@ const NoteDetail: React.FC<NoteDetailProps> = ({ notes }) => {
     }
   }, [note]);
 
-  const htmlContent = useMemo(() => (markdown ? marked(markdown) : ''), [markdown]);
+  const [htmlContent, setHtmlContent] = useState("");
+
+  useEffect(() => {
+    if (!markdown) return;
+
+    renderMarkdown(markdown).then(setHtmlContent);
+  }, [markdown]);
+
+  const toc = useMemo(() => generateTOC(markdown), [markdown]);
 
   if (!note) {
     return (
@@ -54,7 +72,7 @@ const NoteDetail: React.FC<NoteDetailProps> = ({ notes }) => {
   }
 
   return (
-    <div className="max-w-[1100px] mx-auto px-4 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="max-w-[1200px] mx-auto px-4 py-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="mb-6">
         <button 
           onClick={() => navigate(-1)}
@@ -64,7 +82,7 @@ const NoteDetail: React.FC<NoteDetailProps> = ({ notes }) => {
           BACK
         </button>
       </div>
-
+      
       <header className="mb-9">
         <div className="flex flex-wrap gap-2 mb-4">
           {note.tags.map(tag => (
@@ -94,8 +112,35 @@ const NoteDetail: React.FC<NoteDetailProps> = ({ notes }) => {
           </button>
         </div>
       </header>
-
+      
       <div className="prose prose-lg prose-gray dark:prose-invert max-w-none">
+        {/* TOC */}
+        {toc.length > 0 && (
+          <div className="mb-6 p-6 pb-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+            <div className="text-sm font-bold mb-3 uppercase tracking-wider text-gray-500">
+              Contents
+            </div>
+
+            <ul className="space-y-1 text-sm">
+              {toc.map(item => (
+                <li
+                  key={item.id}
+                  style={{ paddingLeft: (item.level - 1) * 16 }}
+                >
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById(item.id);
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="text-gray-600 hover:text-blue-500"
+                  >
+                    {item.text}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {note.type === 'markdown' ? (
           <div className="min-h-[40vh] pb-20">
             {loading ? (
@@ -105,7 +150,11 @@ const NoteDetail: React.FC<NoteDetailProps> = ({ notes }) => {
                </div>
             ) : (
               <div 
-                className="markdown-body leading-relaxed text-base"
+                className="markdown-body prose dark:prose-invert max-w-none 
+                  [&_h1]:scroll-mt-16 
+                  [&_h2]:scroll-mt-16 
+                  [&_h3]:scroll-mt-16 
+                  [&_h4]:scroll-mt-16"
                 dangerouslySetInnerHTML={{ __html: htmlContent }} 
               />
             )}

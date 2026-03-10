@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, Calendar, Tag, FileText, FileCode, ChevronRight } from 'lucide-react';
-import { NoteMetadata } from '../types';
+import { NoteMetadata } from '../../types';
 import Fuse from 'fuse.js';
 
 interface NoteListProps {
@@ -133,12 +133,12 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
 
               <div className="flex items-center justify-between mt-auto">
                 <div className="flex -space-x-1">
-                   {note.tags.slice(0, 2).map(tag => (
+                   {note.tags.map(tag => (
                      <span key={tag} className="px-3 py-1 bg-gray-50 dark:bg-gray-800 text-gray-500 text-[10px] font-bold uppercase rounded-md mr-1 tracking-tighter border border-gray-100 dark:border-gray-700">
                        {tag}
                      </span>
                    ))}
-                   {note.tags.length > 2 && <span className="text-[10px] text-gray-400 ml-1">+{note.tags.length - 2}</span>}
+                   {/* {note.tags.length > 2 && <span className="text-[10px] text-gray-400 ml-1">+{note.tags.length - 2}</span>} */}
                 </div>
                 <div className="text-blue-600 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 flex items-center gap-1 font-bold text-sm">
                   View <ChevronRight size={16} />

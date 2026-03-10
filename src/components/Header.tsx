@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode, onToggleDarkMode }) => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 apple-blur border-b border-gray-200/50 dark:border-gray-800/50 h-14">
-      <div className="max-w-6xl mx-auto h-full px-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
         <Link to="/" className="text-xl font-bold tracking-tight hover:opacity-80 transition-opacity">
           Cozeto's Blog
         </Link>
