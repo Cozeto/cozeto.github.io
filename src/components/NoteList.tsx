@@ -109,7 +109,7 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
         {filteredNotes.length > 0 ? (
           filteredNotes.map((note) => (
             <Link 
-              to={`/note/${note.id}`} 
+              to={`/${note.id}`} 
               key={note.id}
               className="group bg-white dark:bg-gray-900 rounded-[2.5rem] p-10 card-shadow flex flex-col h-full border border-gray-100 dark:border-gray-800/50"
             >
