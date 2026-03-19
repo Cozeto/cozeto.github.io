@@ -16,7 +16,7 @@ export const registryData: NoteMetadata[] = [
   {
     "id": "flow_matching",
     "title": "Flow Matching学习笔记",
-    "date": "2026-03-09",
+    "date": "2026-03-19",
     "tags": [
       "Paper",
       "Generation",

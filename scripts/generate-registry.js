@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 更改为 public/notes，这样 Vite 会自动将其打包到输出目录
-const NOTE_DIR = path.join(__dirname, '../public/notes');
+// 更改为 public，这样 Vite 会自动将其打包到输出目录
+const NOTE_DIR = path.join(__dirname, '../public');
 const OUTPUT_FILE = path.join(__dirname, '../services/registry.ts');
 
 // 确保目录存在
