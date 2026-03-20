@@ -11,7 +11,7 @@ export const registryData: NoteMetadata[] = [
     ],
     "description": "记录Blog网站搭建所用工具及流程",
     "type": "markdown",
-    "path": "notes/blog_development.md"
+    "path": "/blog_development.md"
   },
   {
     "id": "flow_matching",
@@ -24,6 +24,6 @@ export const registryData: NoteMetadata[] = [
     ],
     "description": "生成方法的数学工具之一Flow Matching学习",
     "type": "markdown",
-    "path": "notes/flow_matching.md"
+    "path": "/flow_matching.md"
   }
 ];

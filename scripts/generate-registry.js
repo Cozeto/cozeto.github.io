@@ -75,7 +75,7 @@ function getMetadata() {
       description: description || `Technical entry for ${title}`,
       type,
       // 这里的路径相对于部署后的网站根目录
-      path: `notes/${file}`
+      path: `/${file}`
     };
   }).filter(Boolean);
 
@@ -87,4 +87,4 @@ const notes = getMetadata();
 const content = `import { NoteMetadata } from '../types';\n\nexport const registryData: NoteMetadata[] = ${JSON.stringify(notes, null, 2)};`;
 
 fs.writeFileSync(OUTPUT_FILE, content);
-console.log(`Successfully generated registry.ts with ${notes.length} notes from public/notes.`);
+console.log(`Successfully generated registry.ts with ${notes.length} notes from public`);
