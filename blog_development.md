@@ -1,4 +1,4 @@
-# 博客网站搭建
+# 博客搭建
 
 <!-- [tag]: Web Application、Vite -->
 
