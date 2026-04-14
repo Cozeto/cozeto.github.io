@@ -1,4 +1,4 @@
-# Flow Matching学习笔记
+# Flow Matching
 
 <!-- [tag]: Paper、Generation、Flow Matching -->
 
@@ -82,6 +82,6 @@ Flow Matching所做的就是拟合这个函数采用的是类似Score Matching�
 ## Code & Application
 
 可能结合代码更好理解一点，所以接下来将跑一跑实验以及看看代码
-开源代码在 [Github](https://github.com/atong01/conditional-flow-matching) 上，暂时在本机3060Ti 8G上跑cifar-10数据集（一个包含鸟、车等等的单物品图片的数据集）上的生成任务，跑这个demo大概要4个小时的时间。
+开源代码在 [Github](https://github.com/atong01/conditional-flow-matching) 上，暂时在本机3060Ti 8G上跑cifar-10数据集（一个包含鸟、车等等的单物品图片的数据集）上的生成任务，跑这个demo大概要4个小时的时间。看错了，格式时:分:秒，要10个小时的时间，只能上服务器跑了。
 
 ![alt text](assets/image.png)
