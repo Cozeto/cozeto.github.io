@@ -4,7 +4,6 @@ import { ArrowLeft, Calendar, Share2, Download, Clock } from 'lucide-react';
 import { NoteMetadata } from '../../types';
 import { marked } from 'marked';
 import markedKatex from "marked-katex-extension";
-import "katex/dist/katex.min.css";
 import { renderMarkdown } from "../utils/markdown";
 import { generateTOC } from "../utils/markdown";
 

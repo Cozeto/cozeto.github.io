@@ -131,16 +131,16 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
                 </p>
               </div>
 
-              <div className="flex items-center justify-between mt-auto">
-                <div className="flex -space-x-1">
+              <div className="flex items-end justify-between gap-4 mt-auto">
+                <div className="flex min-w-0 flex-wrap gap-2">
                    {note.tags.map(tag => (
-                     <span key={tag} className="px-3 py-1 bg-gray-50 dark:bg-gray-800 text-gray-500 text-[10px] font-bold uppercase rounded-md mr-1 tracking-tighter border border-gray-100 dark:border-gray-700">
+                     <span key={tag} className="max-w-full rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold leading-none text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 break-words">
                        {tag}
                      </span>
                    ))}
                    {/* {note.tags.length > 2 && <span className="text-[10px] text-gray-400 ml-1">+{note.tags.length - 2}</span>} */}
                 </div>
-                <div className="text-blue-600 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 flex items-center gap-1 font-bold text-sm">
+                <div className="shrink-0 text-blue-600 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 flex items-center gap-1 font-bold text-sm">
                   View <ChevronRight size={16} />
                 </div>
               </div>
