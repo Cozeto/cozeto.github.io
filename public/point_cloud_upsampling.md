@@ -61,7 +61,7 @@ SDF 是有符号距离函数，用以表示点在物体表面内部还是外部�
 这份工作的监督信号主要分为三个部分：
 $$L = L_cd + L_fit + L_rep$$
 L_cd是双向chamfer distance，直接用gt点云和预测坐标计算
-后两项主要用来约束KPConv环节中的3d offset的预测，这两项不需要直接的GT，作用是：L_rep防止点聚在一块，L_fit：使预测的RepKPoints靠近某个局部邻域点。 
+后两项主要用来约束KPConv环节中的3d offset的预测，这两项不需要直接的GT，作用是：L_rep防止点聚在一块，L_fit：使预测的RepKPoints靠近某个局部邻域点。
 
 ### 实验评估
 
