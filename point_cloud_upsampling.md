@@ -40,21 +40,21 @@ SDF 是有符号距离函数，用以表示点在物体表面内部还是外部�
 2. 每个输入点先**提取M个RepKPoints**：
     1. 每个输入点通过ball query找到n个邻域点，拿到 $n*3$ 的点坐标和 $n*C_e$ 的特征
     2. $n*C_e$ 做共享权重MLP得到 $n*C_k$
-    3. init M个kernel Point（工作中设置为15），每个kernel Point跟n个邻域点坐标计算距离d，距离用来加权，加权函数$max(0, 1 - d / σ)$
+    3. init M个kernel Point（工作中设置为15），每个kernel Point跟n个邻域点坐标计算距离d，距离用来加权，加权函数 $max(0, 1 - d / σ)$
     4. 用这个权重去做特征的聚合，每个kernel point将 $n*C_k$ 加权相加得到它对应的长度为C_k的特征向量，M个kernel point即 $M*C_k$
     5. 对每个kernel point的特征再做一个维度变换，即 $M*C_k$ 经过一个权重矩阵 $W_Δ: M × C_k × C_out$ 后得到 $M*C_out$
     6. $M*C_out$ 相加得到长度为 $C_out$ 的 $f_Δ$
     7. 再用 $f_Δ$ 经过MLP之后得到 $M*3$ 的 $Δ_k$，这个是每个kernel point的3d offset，叠加在 init的kernel point坐标上得到RepKPoints的空间坐标。
-3. 得到RepKPoints后，用新坐标跟邻域点做特征加权聚合，得到一份新的 $F_p: M*C_k$，然后乘一个可学习矩阵 $M*C_k*C_k$ 然后把特征聚合（求和），得到一个 $C_k$ 长度的特征向量，作为这个点这个局部的特征$f_g$，concat到 $F_p: M*C_k$ 上得到 $M*2C_k$，再过一个MLP得到最终的RepKPoints特征$F_k: M*C_k$
+3. 得到RepKPoints后，用新坐标跟邻域点做特征加权聚合，得到一份新的 $F_p: M*C_k$，然后乘一个可学习矩阵 $M*C_k*C_k$ 然后把特征聚合（求和），得到一个 $C_k$ 长度的特征向量，作为这个点这个局部的特征 $f_g$，concat到 $F_p: M*C_k$ 上得到 $M*2C_k$，再过一个MLP得到最终的RepKPoints特征 $F_k: M*C_k$
 ![alt text](assets/image-1.png)
-4. 第3步得到了两个特征：一个是每个输入点的局部邻域特征$f_g$（N个输入点，$F_g=N*C_k$），一个是每个输入点对应的RepKPoints的特征$F_k$，接下来**准备建立KP Queries**，每个输入点r个query，r是上采样倍率：
+4. 第3步得到了两个特征：一个是每个输入点的局部邻域特征 $f_g$ （N个输入点， $F_g=N*C_k$），一个是每个输入点对应的RepKPoints的特征 $F_k$，接下来**准备建立KP Queries**，每个输入点r个query，r是上采样倍率：
     1. 初始化是在球面上均匀采r个点
     2. 依旧先ball query找邻域，然后距离加权更新KP Query的特征，得到 $F_{p'} = r * C_k$
-    3. 跟上一步的矩阵乘并聚合很像，就是乘一个新的权重矩阵然后出一个 $f_{g'} = 1 * C_k$ 的特征向量，$f_gf_{g'}$两个拼上刚刚的$F_{p'}$得到$r*3C_k$的特征然后过一个MLP得到KP Queries的特征向量$F_q$
+    3. 跟上一步的矩阵乘并聚合很像，就是乘一个新的权重矩阵然后出一个 $f_{g'} = 1 * C_k$ 的特征向量， $f_g$ 和 $f_{g'}$ 两个拼上刚刚的 $F_{p'}$ 得到 $r*3C_k$ 的特征然后过一个MLP得到KP Queries的特征向量 $F_q$
 
 ![alt text](assets/image-3.png)
 5. 现在获得了RepKPoints的特征矩阵 $N*M*C_k$，以及KP Queries的特征矩阵 $N*r*C_k$，接着做**cross attention**，用KP Queries的特征做查询，RepKPoints的特征做key和value。这里会做一次维度变换计算，但是计算前后维度不变，C_k = C_d = 128，经过三层[cross attention + MLP]最终得到displacement 的特征矩阵 F_d
-6. 最后经过一个MLP将$N*r*C_k$变换为$N*r$个坐标
+6. 最后经过一个MLP将 $N*r*C_k$ 变换为 $N*r$ 个坐标
 
 #### 监督信号
 
