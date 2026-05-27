@@ -4,11 +4,11 @@
 
 <!-- [description]: 点云上采样 -->
 
-## RepKPU: point cloud upsampling with kernel point representation and deformation
+## [CVPR2024]RepKPU: point cloud upsampling with kernel point representation and deformation
 
 ### 动机
 
-目前点云上采样有两种做法：generation-based/refinement-based。生成：提特征 -> 回归xyz，坐标会出现异常值，**回归难度大**。细化/微调：粗生成：简单插值 -> 提特征 -> 从特征生成点然后基于**距离函数**微调点坐标。
+目前点云上采样有两种做法：generation-based/refinement-based。生成：提特征 -> 回归xyz，坐标会出现异常值(outliers or shrinkage artifact)，**回归难度大**。细化/微调：粗生成：简单插值 -> 提特征 -> 从特征生成点然后基于**距离函数**微调点坐标。
 
 #### 距离函数
 
@@ -67,6 +67,7 @@ L_cd是双向chamfer distance，直接用gt点云和预测坐标计算
 ### 实验评估
 
 PU-GAN dataset，点云上采样里很常见的 benchmark
+PU1K dataset
 这篇工作最后指标用了3个：
 
 1. CD：Chamfer Distance
@@ -74,3 +75,59 @@ PU-GAN dataset，点云上采样里很常见的 benchmark
 3. P2F：Point-to-Surface Distance（在我们这个任务里可能可以改成到边缘曲线的距离？）
 
 如果做边缘上的上采样的话，可能需要增加额外的指标来对比效果，还要考虑GT的范围
+
+## [CVPR2023]Grad-PU: arbitrary-scale point cloud upsampling via gradient descent with learned distance functions
+
+### 动机
+
+1. 由于特征提取->特征expansion->3D坐标回归的pipeline，单次训练只能做一个固定的上采样倍率。更换上采样倍率就要重新训练。
+2. 直接3D坐标预测较为困难，常有异常值和收缩伪影(**outliers or shrinkage artifact**)
+
+### 方法
+
+整体的思路是：对任意上采样倍率，先按照这个倍率做插值，然后用训练网络来微调插值出来的坐标。
+
+#### 插值
+
+输入是稀疏输入，对每个输入点：kNN得到k个近邻点，然后直接每个近邻点和这个输入点取中点，在k个点中FPS中选出r个点，r是上采样倍率。
+
+#### 微调
+
+![alt text](assets/image-5.png)
+这篇工作里觉得UDF和SDF很难从低质量的点云中得到，所以用了一个点到点距离：其实就是单向chamfer distance，**输入点离最近的GT的距离**。这里网络训练的目的是能预测出第四张图这个距离场，这个距离场是可微的。然后在跑测试预测的时候，用这个距离场通过梯度下降的方式去更新采样点的坐标，让采样点逐步靠近这个距离的局部最小值（论文里迭代次数=10）（**这里有个弊端，虽然在初始化候选采样点时用了FPS拉开了距离，但是只通过这个距离场很有可能会出现多个点经过梯度下降后聚拢到一块**）。这个做法确实可以arbitrary upsampling rates，因为是每个点独立进去一个shared的距离场做梯度下降，点数并不会影响什么，只会影响计算量。
+
+#### 网络
+![alt text](assets/image-10.png)
+
+1. 先插值点云
+2. 然后用MLP提取出特征l0
+3. 然后主要讲dense block这部分，每个block先经过一次MLP，然后P3DConv部分：
+    1. 每个点k近邻得到k个近邻点，做距离差
+    2. 距离差经过MLP得到权重，写作 $α$ (距离差)，近邻点特征经过MLP得到 $β(feat)$ ，两者相乘再经过一次MLP( $γ$ )得到该点新的特征
+    ![alt text](assets/image-12.png)
+    3. 每一个block的输入会拿到先前不同层级的特征，第一个block输入是l0，第二个block输入是concat(l0,l1)，第三个block输入是concat(l0,l1,l2)，确实不同层级**感受野不同**
+    4. 最后transition把concat(l0,l1,l2,l3)特征维度4d->d
+    5. 因为查询点不一定刚好落在插值后的点云位置上，所以对于任意一个xyz坐标，都要能得到特则特征，所以需要**对特征插值**：
+        1. 对一个query point p，在初始插值点云 PI 里找 3 个最近邻；
+        2. 用距离倒数作为权重；
+        3. 对这 3 个邻居的特征做加权平均。
+    6. 最后max pooling得到一个全局特征g，然后将点云坐标p,g,l0,l1,l2,l3输入到MLP中训练这个距离场函数或者用以预测
+    7. 然后需要补充的是，为了让模型学到的范围更大，训练时有一个**jitter操作**，将初始的插值点云加上一个高斯噪声扰动，插值出新特征，然后再喂给最后的距离场MLP再进行一次训练
+4. 预测的时候就是用训练好的距离场，查询点p->插值提feature->MLP算距离d->d对查询点坐标p求梯度->按照梯度修正点坐标p->迭代T=10次后得到最终上采样点
+
+### 延伸
+
+如果任务重心偏向于边缘的话，感觉这个距离场可以改出一个**加权距离场**，如果查询点离边缘点更近，那么可以乘一个<1的权重，让这个距离场的梯度沿着向边缘的地方下降
+
+### 实验评估
+
+![alt text](assets/image-4.png)
+作者还用在PU-GAN数据集上训练的模型在ScanObjectNN和KITTI两个真实场景扫描数据集上做了测试，但是这两个数据集没有high-res GT，所以只能肉眼看效果。
+
+## [2024预印]EGP3D: Edge-guided Geometric Preserving 3D Point Cloud Super-resolution for RGB-D camera
+
+这篇工作就略显粗糙了，所以我也没看太细，它做的是RGBD相机的点云增强，用RGB图像来增强，首先他的**点云和rgb图像就已经对齐了**，所以可以把点云反投影回RGB图像上。整体的流程是先上采样，把上采样点投影到RGB图像上通过图像canny来修正这个坐标。
+![alt text](assets/image-7.png)
+用的自己做的数据集，然后跟sota比就是直接用sota模型输入点云跑。
+![alt text](assets/image-8.png)
+![alt text](assets/image-9.png)
