@@ -131,3 +131,55 @@ PU1K dataset
 用的自己做的数据集，然后跟sota比就是直接用sota模型输入点云跑。
 ![alt text](assets/image-8.png)
 ![alt text](assets/image-9.png)
+
+## [2018CVPR]PU-net: point cloud upsampling network
+
+上采样任务比较开山的端到端方法
+
+![alt text](assets/image-6.png)
+
+是分patch的方法，先把输入点云 $N * C$ 分patch：
+
+1. FPS找中心点
+2. 每个中心点kNN取邻域点构成patch，这里每个patch是可能会有重叠的，所有patch总点数不等于（一般大于）输入点数，所以在测试时需要采样回 $N * r$ 个点
+3. 取完patch后回做归一化，patch中心点作为坐标系原点，除以patch半径把坐标收缩到(-1, 1)
+
+提特征是类似pointnet的方法，多尺度特征提取：
+
+1. 每个点knn找k个邻域点，算相对坐标，用MLP获得特征，maxpooling压缩成一个特征向量作为这个点的局部特征向量
+2. 采样上一层N/2的点，继续在上一步的特征上做，让特征获得更大的感受野，Grad-PU的多尺度特征也是类似的，只不过那个工作里聚合的方法是**计算权重加权邻域特征相加**。
+3. 深层的点特征通过插值传播回去，每个点就可以拥有多尺度的特征向量，最后concat成一个特征向量
+
+特征扩充，r倍上采样就把 $N * c$ 特征扩充成 $rN * c'$：
+
+1. 设计了r个特征扩充网络，每个网络将 c 变成 c'
+2. 拼起来得到 rN * c'
+
+最后MLP得到预测的点坐标，loss使用的是**EMD loss**(Earth Mover’s Distance,预测和GT算一个最优的一一匹配，让匹配对的点的距离和最小)和repulsion loss，repulsion loss在RepKPU里也有用到：每个点knn找相邻点，然后算之间的距离取反后加权，求和这个值越大惩罚越大，防止点聚在一起
+
+## [ECCV22018]EC-Net: an Edge-aware Point set Consolidation Network
+
+同样是按patch来做。
+
+![alt text](assets/image-11.png)
+
+分patch这一步有一些区别：
+
+1. 不再是knn直接分patch，而是先knn建边建出来一个图，然后每个中心点取最近的图上距离的k个点。这样的话patch中点的选取会更倾向于在表面上扩散选择，而不是直接一个球形范围。
+2. 然后设置了一个β，最后采样总点数是 $β * N$ 个点，patch数量是 $β * N / patch\_ size$，这样可以保证每个patch之间有重叠。
+3. 然后每个patch保留靠近中心的一半点，这样每个点都有完整的邻域信息。
+
+对点云特征提取和特征expansion的方法跟PU-Net是基本一致的。
+
+加了一个**edge distance regression**，用上一步的特征回归每个点距离最近的sharp edge的距离d。
+
+将这个距离拼接到expansion后的feature上，经过两个全连接层回归坐标。
+
+用回归的这个d来预测每个点是否是边缘点，小于设定的阈值就判断它是边缘点。
+
+训练一共用了四个监督信号：
+
+1. 距离最近sharp edge的距离d的loss
+2. edge point判断的loss
+3. surface loss，点到mesh的距离，约束点落在表面上
+4. repulsion loss，对比EC-Net加了一个截断阈值，距离超过h就不惩罚
